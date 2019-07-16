@@ -47,6 +47,38 @@ paths:
             application/json: 
               schema: 
                 $ref: '#/components/schemas/PriceChart'
+  /minterDepositAddress:
+    get:
+      tags:
+        - Sell
+      summary: Get Minter deposit address (sell coins)
+      operationId: getMinterDepositAddress
+      parameters: 
+        - name: bitcoinAddress
+          in: query
+          description: Bitcoin address
+          required: true
+          schema:
+            type: string
+        - name: coin
+          in: query 
+          description: Coin to sell
+          required: true
+          schema:
+            type: string
+        - name: price
+          in: query
+          description: Sell price
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MinterDepositAddress'
 components:
   schemas:
     Price:
@@ -79,3 +111,15 @@ components:
               description: Next price update
               type: string
               example: "2019-07-16T09:39:02.173431916Z"
+    MinterDepositAddress:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            address: 
+              type: string
+              example: "Mx153b3981c24804d3ef22da90a5b3fbc42c5b46ce"
+            tag:
+              type: string
+              example: "IutO0NVePpoDiSZhXvtj"
