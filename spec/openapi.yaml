@@ -13,7 +13,7 @@ info:
     1. Call `GET /api/price`
     
     ## HOWTO buy coins
-    1. Get bitcoin deposit address by `GET /api/bitcoinDepositAddress?minterAddress=Mx...` (optionally `&tag=...` if you are buying by personal link)
+    1. Get bitcoin deposit address by `GET /api/bitcoinDepositAddress?minterAddress=Mx...&email=...` (optionally `&tag=...` if you are buying by personal link)
     2. Send BTC. You can watch status of deposit by calling `GET /api/bitcoinAddressStatus?address=1M...`
     3. Wait for 2 confirmations and receive coins. Price for the order will be fixed once BTC tx is available in mempool.
     
@@ -126,6 +126,11 @@ paths:
           schema:
             type: string
         - name: coin
+          in: query 
+          required: true
+          schema:
+            type: string
+        - name: email
           in: query 
           required: true
           schema:
