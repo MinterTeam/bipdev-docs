@@ -5,17 +5,19 @@ info:
   contact:
     email: dl@decenter.org
   description: |
-    API documentataion for bip.dev
+    Documentation for bip.dev API service
     
-    # HOWTO get current price
+    Endpoint: `https://api.bip.dev/`
+    
+    ## HOWTO get current price
     1. Call `GET /api/price`
     
-    # HOWTO buy
+    ## HOWTO buy coins
     1. Get bitcoin deposit address by `GET /api/bitcoinDepositAddress?minterAddress=Mx...` (optionally `&tag=...` if you are buying by personal link)
     2. Send BTC. You can watch status of deposit by calling `GET /api/bitcoinAddressStatus?address=1M...`
-    3. Wait for 2 confirmations and receive coins
+    3. Wait for 2 confirmations and receive coins. Price for the order will be fixed once BTC tx is available in mempool.
     
-    # HOWTO sell
+    ## HOWTO sell coins
     1. Get minter deposit address by `GET /api/minterDepositAddress?bitcoinAddress=1M...&price=3200&coin=BIP`
     2. Send coins
     3. Wait while someone will buy your coins (or provide received tag so someone can by your coins directly)
