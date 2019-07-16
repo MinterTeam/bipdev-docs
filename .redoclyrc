@@ -1,0 +1,8 @@
+
+apiTitle: bip.dev
+splitSpec: false
+codeSamples: true
+swaggerUI: false
+travis: true
+repo: MinterTeam/bipdev-docs
+oasVersion: 3.0.0

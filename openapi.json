@@ -1,0 +1,411 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "0.1.0-alpha",
+    "title": "bip.dev",
+    "contact": {
+      "email": "dl@decenter.org"
+    },
+    "description": "Documentation for bip.dev API service\n\nEndpoint: `https://api.bip.dev/`\n\n## HOWTO get current price\n1. Call `GET /api/price`\n\n## HOWTO buy coins\n1. Get bitcoin deposit address by `GET /api/bitcoinDepositAddress?minterAddress=Mx...` (optionally `&tag=...` if you are buying by personal link)\n2. Send BTC. You can watch status of deposit by calling `GET /api/bitcoinAddressStatus?address=1M...`\n3. Wait for 2 confirmations and receive coins. Price for the order will be fixed once BTC tx is available in mempool.\n\n## HOWTO sell coins\n1. Get minter deposit address by `GET /api/minterDepositAddress?bitcoinAddress=1M...&price=3200&coin=BIP`\n2. Send coins\n3. Wait while someone will buy your coins (or provide received tag so someone can by your coins directly)\n"
+  },
+  "tags": [
+    {
+      "name": "Price",
+      "description": "Price methods"
+    },
+    {
+      "name": "Sell",
+      "description": "Sell methods"
+    },
+    {
+      "name": "Buy",
+      "description": "Buy methods"
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://api.bip.dev/api"
+    }
+  ],
+  "paths": {
+    "/price": {
+      "get": {
+        "tags": [
+          "Price"
+        ],
+        "summary": "Get current BIP price",
+        "operationId": "getPrice",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Price"
+                },
+                "example": {
+                  "price": 1141,
+                  "next_update": "2019-07-16T09:39:02.173431916Z"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/priceChart": {
+      "get": {
+        "tags": [
+          "Price"
+        ],
+        "summary": "Get history of BIP price",
+        "operationId": "getPriceChart",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceChart"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/minterDepositAddress": {
+      "get": {
+        "tags": [
+          "Sell"
+        ],
+        "summary": "Get Minter deposit address (sell coins)",
+        "operationId": "getMinterDepositAddress",
+        "parameters": [
+          {
+            "name": "bitcoinAddress",
+            "in": "query",
+            "description": "Bitcoin address",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "coin",
+            "in": "query",
+            "description": "Coin to sell",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "price",
+            "in": "query",
+            "description": "Sell price",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MinterDepositAddress"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tag": {
+      "get": {
+        "tags": [
+          "Buy"
+        ],
+        "summary": "Get tag info",
+        "operationId": "getTag",
+        "parameters": [
+          {
+            "name": "tag",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tag"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bitcoinDepositAddress": {
+      "get": {
+        "tags": [
+          "Buy"
+        ],
+        "summary": "Get Bitcoin deposit address (buy coins)",
+        "operationId": "getBitcoinDepositAddress",
+        "parameters": [
+          {
+            "name": "minterAddress",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "coin",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tag",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BitcoinDepositAddress"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bitcoinAddressStatus": {
+      "get": {
+        "tags": [
+          "Buy"
+        ],
+        "summary": "Get bitcoin deposit status",
+        "operationId": "getBitcoinAddressStatus",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BitcoinAddressStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reclaimBtc": {
+      "get": {
+        "tags": [
+          "Buy"
+        ],
+        "summary": "Reclaim BTC from unfilled order",
+        "operationId": "reclaimBTC",
+        "parameters": [
+          {
+            "name": "order_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReclaimBtc"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Price": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "price": {
+                "description": "Current price of BIP",
+                "type": "integer",
+                "example": 3200
+              },
+              "next_update": {
+                "description": "Next price update",
+                "type": "string",
+                "example": "2019-07-16T09:39:02.173431916Z"
+              }
+            }
+          }
+        }
+      },
+      "PriceChart": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "price": {
+                  "description": "Current price of BIP",
+                  "type": "integer",
+                  "example": 3200
+                },
+                "timestamp": {
+                  "description": "Next price update",
+                  "type": "string",
+                  "example": "2019-07-16T09:39:02.173431916Z"
+                }
+              }
+            }
+          }
+        }
+      },
+      "MinterDepositAddress": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "address": {
+                "type": "string",
+                "example": "Mx153b3981c24804d3ef22da90a5b3fbc42c5b46ce"
+              },
+              "tag": {
+                "type": "string",
+                "example": "IutO0NVePpoDiSZhXvtj"
+              }
+            }
+          }
+        }
+      },
+      "BitcoinDepositAddress": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "address": {
+                "type": "string",
+                "example": "143soojteb6T7FhDwiSnXYfCBTV4To1cdF"
+              }
+            }
+          }
+        }
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "minter_address": {
+                "type": "string",
+                "example": "Mx153b3981c24804d3ef22da90a5b3fbc42c5b46ce"
+              },
+              "btc_price": {
+                "type": "integer",
+                "example": 110000000
+              },
+              "price": {
+                "type": "integer",
+                "example": 3200
+              },
+              "coin": {
+                "type": "string",
+                "example": "BIP"
+              },
+              "amount": {
+                "type": "string",
+                "example": "100000000000000000000"
+              }
+            }
+          }
+        }
+      },
+      "BitcoinAddressStatus": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "coin": {
+                "type": "string",
+                "example": "BIP"
+              },
+              "will_receive": {
+                "type": "string",
+                "example": "100000000000000000000"
+              }
+            }
+          }
+        }
+      },
+      "ReclaimBtc": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}
