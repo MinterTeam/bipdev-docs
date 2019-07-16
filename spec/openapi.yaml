@@ -146,6 +146,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BitcoinAddressStatus'
+  /reclaimBtc:
+    get:
+      tags:
+        - Buy
+      summary: Reclaim BTC from unfilled order
+      operationId: reclaimBTC
+      parameters: 
+        - name: order_id
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: proof
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReclaimBtc'
 components:
   schemas:
     Price:
@@ -232,3 +256,8 @@ components:
             will_receive:
               type: string
               example: "100000000000000000000"
+    ReclaimBtc:
+      type: object
+      properties:
+        data:
+          type: boolean
