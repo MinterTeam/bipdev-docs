@@ -79,6 +79,73 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MinterDepositAddress'
+  /tag:
+    get:
+      tags:
+        - Buy
+      summary: Get tag info
+      operationId: getTag
+      parameters: 
+        - name: tag
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+  /bitcoinDepositAddress:
+    get:
+      tags:
+        - Buy
+      summary: Get Bitcoin deposit address (buy coins)
+      operationId: getBitcoinDepositAddress
+      parameters: 
+        - name: minterAddress
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: coin
+          in: query 
+          required: true
+          schema:
+            type: string
+        - name: tag
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BitcoinDepositAddress'
+  /bitcoinAddressStatus:
+    get:
+      tags:
+        - Buy
+      summary: Get bitcoin deposit status
+      operationId: getBitcoinAddressStatus
+      parameters: 
+        - name: address
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BitcoinAddressStatus'
 components:
   schemas:
     Price:
@@ -123,3 +190,45 @@ components:
             tag:
               type: string
               example: "IutO0NVePpoDiSZhXvtj"
+    BitcoinDepositAddress:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            address: 
+              type: string
+              example: "143soojteb6T7FhDwiSnXYfCBTV4To1cdF"
+    Tag:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            minter_address: 
+              type: string
+              example: "Mx153b3981c24804d3ef22da90a5b3fbc42c5b46ce"
+            btc_price: 
+              type: integer
+              example: 110000000
+            price: 
+              type: integer
+              example: 3200
+            coin: 
+              type: string
+              example: "BIP"
+            amount:
+              type: string
+              example: "100000000000000000000"
+    BitcoinAddressStatus:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            coin: 
+              type: string
+              example: "BIP"
+            will_receive:
+              type: string
+              example: "100000000000000000000"
