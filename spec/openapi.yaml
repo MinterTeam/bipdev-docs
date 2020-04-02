@@ -21,6 +21,10 @@ info:
     1. Get minter deposit address by `GET /api/minterDepositAddress?bitcoinAddress=1M...&price=3200&coin=BIP`
     2. Send coins
     3. Wait while someone will buy your coins (or provide received tag so someone can by your coins directly)
+    
+    ## HOWTO use cards
+    Use `https://card-api.bip.dev`
+    Swagger docs: https://app.swaggerhub.com/apis-docs/GrKamil/bipdev-card-api
 
 tags:
   - name: Price
